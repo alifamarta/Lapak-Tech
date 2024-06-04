@@ -34,8 +34,8 @@ class _ProdukFormState extends State<ProdukForm> {
         judul = "EDIT PRODUK";
         tombolSubmit = "EDIT";
 
-        _kodeProdukTextboxController.text = widget.produk!.kodeProduk;
-        _namaProdukTextboxController.text = widget.produk!.namaProduk;
+        _kodeProdukTextboxController.text = widget.produk!.kodeProduk!;
+        _namaProdukTextboxController.text = widget.produk!.namaProduk!;
         _hargaProdukTextboxController.text = widget.produk!.hargaProduk.toString();
       });
     } else {

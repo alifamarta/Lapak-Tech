@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lapak_tech/ui/login_page.dart';
+import 'package:lapak_tech/ui/produk_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Lapak Tech',
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: ProdukPage(),
     );
   }
 }
