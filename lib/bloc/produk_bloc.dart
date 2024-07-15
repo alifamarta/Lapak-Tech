@@ -4,7 +4,7 @@ import 'package:lapak_tech/helpers/api.dart';
 import 'package:lapak_tech/helpers/api_url.dart';
 import 'package:lapak_tech/model/produk.dart';
 
-class ProductBloc {
+class ProdukBloc {
   static Future<List<Produk>> getProduk() async {
     String apiUrl = ApiUrl.listProd;
     var response = await Api().get(apiUrl);

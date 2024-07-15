@@ -6,7 +6,7 @@ import 'app_exception.dart';
 
 class Api {
   Future<dynamic> post(dynamic url, dynamic data) async {
-    var token = await userInfo().getToken();
+    var token = await UserInfo().getToken();
     var responseJson;
 
     try {
@@ -21,7 +21,7 @@ class Api {
   }
 
   Future<dynamic> get(dynamic url) async {
-    var token = await userInfo().getToken();
+    var token = await UserInfo().getToken();
     var responseJson;
 
     try {

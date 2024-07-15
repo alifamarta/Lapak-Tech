@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lapak_tech/bloc/logout_bloc.dart';
 import 'package:lapak_tech/model/produk.dart';
+import 'package:lapak_tech/ui/login_page.dart';
 import 'package:lapak_tech/ui/produk_detail.dart';
 import 'package:lapak_tech/ui/produk_form.dart';
 
@@ -33,36 +35,37 @@ class _ProdukPageState extends State<ProdukPage> {
             ListTile(
               title: const Text('Logout'),
               trailing: const Icon(Icons.logout),
-              onTap: () async {},
+              onTap: () async {
+                await LogoutBloc.logout().then((value) => {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()))
+                });
+              },
             )
           ]
         ),
       ),
-      body: ListView(
-        children: [
-          ItemProduk(
-            produk: Produk(
-              kodeProduk: "A001",
-              namaProduk: 'MSI GeForce RTX 4090',
-              hargaProduk: 36000000
-            )
-          ),
-          ItemProduk(
-            produk: Produk(
-              kodeProduk: "A002",
-              namaProduk: 'MSI Radeon RX 6900 XT',
-              hargaProduk: 32000000
-            )
-          ),
-          ItemProduk(
-            produk: Produk(
-              kodeProduk: "A003",
-              namaProduk: 'AMD Ryzen 9 7950X',
-              hargaProduk: 9490000
-            )
-          )
-        ],
+      body: FutureBuilder<List>(
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+          return snapshot.hasData ? ListProduk(list: snapshot.data) : const Center(child: CircularProgressIndicator());
+        },
       )
+    );
+  }
+}
+
+class ListProduk extends StatelessWidget {
+  final List? list;
+  
+  const ListProduk({Key? key, this.list}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: list == null ? 0 : list!.length,
+      itemBuilder: (context, index) {
+        return ItemProduk(produk: list![index]);
+      }
     );
   }
 }

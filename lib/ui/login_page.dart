@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lapak_tech/bloc/login_bloc.dart';
+import 'package:lapak_tech/helpers/user_info.dart';
+import 'package:lapak_tech/ui/produk_page.dart';
 import 'package:lapak_tech/ui/registrasi_page.dart';
+import 'package:lapak_tech/widget/warning_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -79,6 +83,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+void _submit() {
+  _formKey.currentState!.save();
+  setState(() {
+    _isLoading = true;
+  });
+
+  LoginBloc.login(
+    email: _emailTextboxController.text,
+    password: _passwordTextboxController.text
+  ).then((value) async {
+    await UserInfo().setToken(value.token.toString());
+    await UserInfo().setUserID(value.userID.toString());
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProdukPage()));
+  }, onError: (e) {
+    print(e);
+    showDialog(
+      context: context,
+      barrierDismissible: false, 
+      builder: (BuildContext context) => const WarningDialog(desc: "Login gagal, silahkan coba lagi"));
+  });
+  setState(() {
+    _isLoading = false;
+  });
+}
+  
   Widget _menuRegist() {
     return Center(
       child: InkWell(

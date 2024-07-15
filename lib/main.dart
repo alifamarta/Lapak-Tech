@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void isLogin() async {
-    var token = await userInfo().getToken();
+    var token = await UserInfo().getToken();
 
     if (token != null) {
       setState(() {page = const ProdukPage();});

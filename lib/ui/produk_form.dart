@@ -1,7 +1,10 @@
-import 'dart:ffi';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lapak_tech/bloc/produk_bloc.dart';
 import 'package:lapak_tech/model/produk.dart';
+import 'package:lapak_tech/ui/produk_page.dart';
+import 'package:lapak_tech/widget/warning_dialog.dart';
 
 class ProdukForm extends StatefulWidget {
   Produk? produk;
@@ -14,7 +17,7 @@ class ProdukForm extends StatefulWidget {
 
 class _ProdukFormState extends State<ProdukForm> {
   final _formKey = GlobalKey<FormState>();
-  bool isLoading = false;
+  bool _isLoading = false;
   String judul = "TAMBAH PRODUK";
   String tombolSubmit = "SIMPAN";
 
@@ -45,7 +48,6 @@ class _ProdukFormState extends State<ProdukForm> {
   }
 
   @override 
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(judul)),
@@ -116,9 +118,58 @@ class _ProdukFormState extends State<ProdukForm> {
   // Membuat Tombol Simpan/Ubah
   Widget _submitButton() {
     return OutlinedButton(
+      child: Text(tombolSubmit),
       onPressed: () {
         var validate = _formKey.currentState!.validate();
-      }, 
-      child: Text(tombolSubmit));
+        if (validate) {
+          if (!_isLoading){
+            if (widget.produk != null) {
+              
+            } else {
+              create();
+            }
+          } 
+        }
+      });
+  }
+
+  create() {
+    setState(() {
+      _isLoading = true;
+    });
+    Produk createProduk = Produk(id: null);
+
+    createProduk.kodeProduk = _kodeProdukTextboxController.text;
+    createProduk.namaProduk = _namaProdukTextboxController.text;
+    createProduk.hargaProduk = int.parse(_hargaProdukTextboxController.text);
+    ProdukBloc.addProduk(produk: createProduk).then((value) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const ProdukPage()));
+    }, onError: (error) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => const WarningDialog(desc: "Simpan gagal, silahkan coba lagi"));
+    });
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  update() {
+    setState(() {
+      _isLoading = true;
+    });
+    Produk updateProduk = Produk(id: null);
+    updateProduk.id = widget.produk!.id;
+    updateProduk.kodeProduk = _kodeProdukTextboxController.text;
+    updateProduk.namaProduk = _namaProdukTextboxController.text;
+    updateProduk.hargaProduk = int.parse(_hargaProdukTextboxController.text);
+    ProdukBloc.updateProduk(produk: updateProduk).then((value) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const ProdukPage()));
+    }, onError: (e) {
+      showDialog(context: context, builder: (BuildContext context) => const WarningDialog(desc: "Update gagal, silahkan coba lagi"));
+    });
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

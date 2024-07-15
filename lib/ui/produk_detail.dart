@@ -68,7 +68,11 @@ class _ProdukDetailState extends State<ProdukDetail> {
         // Tombol Hapus
         OutlinedButton(
           child: const Text("Ya"),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => ProdukForm(produk: widget.produk!)));
+          },
         ),
         // Tombol Batal
         OutlinedButton(

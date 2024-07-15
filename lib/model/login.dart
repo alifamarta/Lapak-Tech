@@ -2,17 +2,17 @@ class Login {
   int? code;
   bool? status;
   String? token;
-  int? userId;
+  int? userID;
   String? userEmail;
 
-  Login({this.code, this.status, this.token, this.userId, this.userEmail});
+  Login({this.code, this.status, this.token, this.userID, this.userEmail});
 
   factory Login.fromJson(Map<String, dynamic> obj) {
     return Login(
       code: obj['code'],
       status: obj['status'],
       token: obj['data']['token'],
-      userId: obj['data']['user']['id'],
+      userID: obj['data']['user']['id'],
       userEmail: obj['data']['user']['email']);
   }
 }
